@@ -1,2 +1,5 @@
 bin
+obj
 debug
+.vs 
+.token.txt

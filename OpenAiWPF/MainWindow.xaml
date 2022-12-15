@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OpenAiWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
-    <Grid>
-        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="748" TextAlignment="Center" FontSize="20" Height="29" HorizontalAlignment="Center" Margin="0,652,0,0" KeyDown="TextBox_KeyDown" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+        Title="MainWindow" Height="650" Width="800">
+    <Grid x:Name="grid" Background="#FF14365B">
+        <TextBox x:Name="textBox" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="748" TextAlignment="Center" FontSize="20" Height="29" HorizontalAlignment="Center" Margin="0,547,0,0" KeyDown="TextBox_KeyDown" PreviewKeyDown="TextBox_PreviewKeyDown" Background="#FF293140" Foreground="White"/>
         <ProgressBar HorizontalAlignment="Center" Height="12" Margin="0,635,0,0" VerticalAlignment="Top" Width="748" IsIndeterminate = "True" Visibility = "Collapsed" x:Name = "loadingSpinner"/>
-        <TextBox x:Name="textBlock" HorizontalAlignment="Center" Margin="0,51,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="561" Width="638" IsReadOnly="True"/>
+        <TextBox x:Name="textBlock" HorizontalAlignment="Center" Margin="0,74,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="442" Width="638" IsReadOnly="True" TextChanged="textBlock_TextChanged" Background="#FF526790" Foreground="White"/>
+        <Label x:Name="label" Content="Label" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="36" Foreground="Silver"/>
     </Grid>
 </Window>

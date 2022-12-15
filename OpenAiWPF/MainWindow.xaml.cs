@@ -20,13 +20,16 @@ using System.Windows.Shapes;
 using System.Reflection.Metadata;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Application = System.Windows.Application;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace OpenAiWPF
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class MainWindow : System.Windows.Window
   {
     [DllImport("user32.dll")]
     private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -51,14 +54,29 @@ namespace OpenAiWPF
     public MainWindow()
     {
       InitializeComponent();
+
+      textBox.Focus();
+
+      Title = "OpenAI Prompt";
+      label.Content = "OpenAI Prompt";
+
+      CenterWindowOnScreen();
+    }
+
+    private void CenterWindowOnScreen()
+    {
+      double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+      double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+      double windowWidth = this.Width;
+      double windowHeight = this.Height;
+      this.Left = (screenWidth / 2) - (windowWidth / 2);
+      this.Top = (screenHeight / 2) - (windowHeight / 2);
     }
 
     private void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
       if (e.Key == Key.Enter)
       {
-        // Handle the Enter key press here...
-
         // Make the spinner visible while the REST call is in progress
         loadingSpinner.Visibility = Visibility.Visible;
 
@@ -78,13 +96,12 @@ namespace OpenAiWPF
         {
           model = "text-davinci-003",
           temperature = 0.7,
-          max_tokens = 256,
+          max_tokens = 500,
           top_p = 1,
           frequency_penalty = 0,
           presence_penalty = 0,
           prompt = textBox.Text
         };
-
 
         // serialize the request object into a JSON string
         var requestContent = JsonConvert.SerializeObject(requestObject);
@@ -108,6 +125,7 @@ namespace OpenAiWPF
         var text = first.SelectToken("text");
         textBlock.Text = text.ToString();
 
+        System.Windows.Clipboard.SetText(text.ToString());
 
         loadingSpinner.Visibility = Visibility.Collapsed;
 
@@ -153,9 +171,18 @@ namespace OpenAiWPF
               int vkey = (((int)lParam >> 16) & 0xFFFF);
               if (vkey == VK_CAPITAL)
               {
-                var i = 0;
-                Activate();
-                textBox.Focus();
+                var window = Application.Current.MainWindow;
+                if (window.WindowState == WindowState.Minimized)
+                {
+                  window.WindowState = WindowState.Normal;
+                  Activate();
+                  textBox.Focus();
+                }
+                else
+                {
+
+                  window.WindowState = WindowState.Minimized;
+                }
 
                 //tblock.Text += "CapsLock was pressed" + Environment.NewLine;
               }
@@ -177,6 +204,12 @@ namespace OpenAiWPF
     private void textBox_TextChanged(object sender, TextChangedEventArgs e)
     {
 
+    }
+
+    private void textBlock_TextChanged(object sender, TextChangedEventArgs e)
+    {
+      var i = 0;
+      var j = 0;
     }
   }
 }
